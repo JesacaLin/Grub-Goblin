@@ -9,11 +9,25 @@ import java.util.Stack;
 
 
 public class Main {
+
+    static class DealEntry {
+        Location location;
+        Deal deal;
+        DealEntry (Location location,  Deal deal) {
+            this.location = location;
+            this.deal = deal;
+        }
+        @Override public String toString() {
+            return "Deal: " + deal.getNameOfDeal() + ", available on " + deal.getDayOfWeek() + " from " + deal.getStartTime() + " to " + deal.getEndTime() + " at " + location.getLocationName() + ": " + location.getFullAddress();
+        }
+    }
     public static void main( String[] args ) {
         Scanner scanner = new Scanner(System.in);
+        DealEntry newDeal = null;
 
         //CREATE MY DATA STRUCTURES UP HERE
-        Stack<String> dealStack = new Stack<>();
+        Stack<DealEntry> dealStack = new Stack<>();
+
 
         System.out.println("Welcome to Grub Goblin! A food deals directory.");
         //prompt to start the process;
@@ -28,7 +42,6 @@ public class Main {
 
         if (menuInput.equals("1")) {
             //input Location info
-
             System.out.println("Name of restaurant or store: ");
             String locationName = scanner.nextLine().toLowerCase();
             System.out.println("Please provide the Street: ");
@@ -56,7 +69,7 @@ public class Main {
             String dayOfWeekString = scanner.nextLine().toUpperCase();
             DayOfWeek dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
 
-            //Need to convert Strings to LocalTime object
+            //Need to convert Strings to LocalTime object. REALLY NEED A TRY/CATCH HERE THAT IS A LOOP...
             System.out.println("When does the deal start? Use military time (ex 09:00 or 14:00)");
             String stringStartTime = scanner.nextLine();
             LocalTime startTime = LocalTime.parse(stringStartTime);
@@ -70,19 +83,31 @@ public class Main {
             //creating a deal instance from the class
             Deal deal = new Deal(nameOfDeal, price, dayOfWeek, startTime, endTime);
 
-            //ADD THE INSTANCES TO A STACK
+            //NEED TO ADD AS ONE ENTRY INTO THE DATA STRUCTURE
+            newDeal = new DealEntry(location,deal);
 
-            System.out.println("Here is the deal you added: " + deal + " at " + location);
+            //ADDING TO STACK
+            dealStack.push(newDeal);
+
             //CHECK IF THEY WANT TO KEEP IT OR REMOVE IT
-            //IF STATEMENT HERE TO CHECK
-            //PUSH TO STACK IF YES
-            //POP IF NOT
-
-
+            System.out.println("Do you want keep or remove the deal you just added? Keep / Remove ");
+            String toSaveOrNot = scanner.nextLine().toLowerCase();
+            if (toSaveOrNot.equals("remove")) {
+                System.out.println("Your last entry was removed");
+                dealStack.pop();
+            } else if (toSaveOrNot.equals("keep")){
+                System.out.println("This entry was added: " + dealStack.peek());
+            }
         }
 
+        if (menuInput.equals("2")) {
+            for (DealEntry deals : dealStack) {
+                System.out.println(deals);
+            }
+        }
 
         if (menuInput.equals("5")) {
+            System.out.println("There are currently " + dealStack.size() + " entries in the directory!");
             scanner.close();
         }
 

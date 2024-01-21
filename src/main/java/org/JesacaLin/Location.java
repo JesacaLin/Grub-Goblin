@@ -33,14 +33,15 @@ public class Location {
     public int getZip() {
         return zip;
     }
-    //make a get address one to easily display the full address if needed.
-    public String getFullAddress() {
-        return street + ", " + city + ", " + state + " " + zip;
-    }
+
 
     //methods?
 
 
+    //make a get address one to easily display the full address if needed.
+    public String getFullAddress() {
+        return street + ", " + city + ", " + state + " " + zip;
+    }
 
     @Override public String toString() {
         return locationName + ": " + street + ", " + city + ", " + state + " " + zip;

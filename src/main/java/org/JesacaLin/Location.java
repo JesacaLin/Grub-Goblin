@@ -3,7 +3,7 @@ package org.JesacaLin;
 import java.util.*;
 public class Location {
     //private variables
-    private String locationName;
+    private static String locationName;
     private String street;
     private String city;
     private String state;
@@ -11,14 +11,18 @@ public class Location {
 
     //constructor
     public Location(String locationName, String street, String city, String state, int zip) {
-        this.locationName = locationName;
+        Location.locationName = locationName;
         this.street = street;
         this.city = city;
         this.state = state;
         this.zip = zip;
     }
+    public Location(String locationName) {
+        Location.locationName = locationName;
+    }
+
     //getters
-    public String getLocationName() {
+    public static String getLocationName() {
         return locationName;
     }
     public String getStreet() {

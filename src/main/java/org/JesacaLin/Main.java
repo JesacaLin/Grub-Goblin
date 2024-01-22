@@ -17,8 +17,9 @@ public class Main {
             this.location = location;
             this.deal = deal;
         }
+
         @Override public String toString() {
-            return "Deal: " + deal.getNameOfDeal() + ", available on " + deal.getDayOfWeek() + " from " + deal.getStartTime() + " to " + deal.getEndTime() + " at " + location.getLocationName() + ": " + location.getFullAddress();
+            return "Deal: " + deal.getNameOfDeal() + ", available on " + deal.getDayOfWeek() + " from " + deal.getStartTime() + " to " + deal.getEndTime() + " at " + Location.getLocationName() + ": " + location.getFullAddress();
         }
     }
 
@@ -29,11 +30,13 @@ public class Main {
         //CREATE MY DATA STRUCTURES UP HERE
         Stack<DealEntry> dealStack = new Stack<>();
         Set<String> dealSet = new HashSet<>();
+        List<DealEntry> dealList = new ArrayList<>();
+        //String locationKey = Location.getLocationName();
+        Map<String, List<DealEntry>> dealMap = new HashMap<>();
 
         System.out.println("Welcome to Grub Goblin! A food deals directory.");
 
         while (true) {
-            //prompt to start the process;
             System.out.println("Please select from menu: ");
             System.out.println("1: Add a deal");
             System.out.println("2: See all deals");
@@ -44,9 +47,9 @@ public class Main {
             String menuInput = scanner.nextLine().toLowerCase();
 
             if (menuInput.equals("1")) {
-                //input Location info
+                //---------------->LOCATION INFO
                 System.out.println("Name of restaurant: ");
-                String locationName = scanner.nextLine().toLowerCase();
+                String nameOfVenue = scanner.nextLine().toLowerCase();
                 System.out.println("Street: ");
                 String street = scanner.nextLine().toLowerCase();
                 System.out.println("City: ");
@@ -80,19 +83,23 @@ public class Main {
                 String stringEndTime = scanner.nextLine();
                 LocalTime endTime = LocalTime.parse(stringEndTime);
 
-                //creating a location instance from the class
-                Location location = new Location(locationName, street, city, state, zip);
-
-                //creating a deal instance from the class
+                //creating general instance from the class
+                Location location = new Location(nameOfVenue, street, city, state, zip);
                 Deal deal = new Deal(nameOfDeal, price, dayOfWeek, startTime, endTime);
 
                 //NEED TO ADD AS ONE ENTRY INTO THE DATA STRUCTURE
                 DealEntry newDeal = new DealEntry(location, deal);
 
+                //SPECIALIZED INSTANCES
+                Location locationForList = new Location(nameOfVenue);
+                Deal dealForList = new Deal(nameOfDeal,price, startTime);
+                DealEntry newDealForList = new DealEntry(locationForList, dealForList);
+
                 //ADDING TO DEAL STACK
                 dealStack.push(newDeal);
                 //ADDING RESTAURANT NAME TO SET
-                dealSet.add(locationName);
+                dealSet.add(nameOfVenue);
+                dealList.add(newDealForList);
 
                 //CHECK IF THEY WANT TO KEEP IT OR REMOVE IT
                 System.out.println("Do you want keep or remove the deal you just added? Keep / Remove ");
@@ -102,6 +109,7 @@ public class Main {
                 } else if (toSaveOrNot.equals("remove")) {
                     System.out.println("Your last entry was removed");
                     dealStack.pop();
+                    dealSet.remove(nameOfVenue);
                     break;
                 }
             }
@@ -121,7 +129,7 @@ public class Main {
             }
 
             if (menuInput.equals("4")) {
-
+                //CALL THE SEPARATE CLASS TO SORT MAP HERE?
             }
 
             if (menuInput.equals("5")) {

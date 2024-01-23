@@ -92,10 +92,12 @@ public class Main {
                 dealSet.add(nameOfVenue);
 
                 if (dealMap.containsKey(dayOfWeekString)) {
-                    dealMap.put(dayOfWeekString, dealArrayList.add(newDeal));
+                    ArrayList<DealEntry> dealArrayList = dealMap.get(dayOfWeekString);
+                    dealArrayList.add(newDeal);
                 } else {
-                    List<DealEntry> dealArrayList = new ArrayList<>();
-                    dealMap.put(dayOfWeekString, dealArrayList.add(newDeal));
+                    ArrayList<DealEntry> dealArrayList = new ArrayList<>();
+                    dealArrayList.add(newDeal);
+                    dealMap.put(dayOfWeekString, dealArrayList);
                 }
 
                 //CHECK IF THEY WANT TO KEEP IT OR REMOVE IT

@@ -1,5 +1,4 @@
 package org.JesacaLin;
-import javax.management.monitor.StringMonitor;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.time.DayOfWeek;
@@ -19,7 +18,7 @@ public class Main {
         }
 
         @Override public String toString() {
-            return " Location Name: " + Location.getLocationName() + " Date: " + deal.getDayOfWeek() + " Time: " + deal.getStartTime() + " Deal: " + deal.getNameOfDeal() + " Address: " + location.getFullAddress();
+            return " Location Name: " + location.getLocationName() + " Date: " + deal.getDayOfWeek() + " Time: " + deal.getStartTime() + " Deal: " + deal.getNameOfDeal() + " Address: " + location.getFullAddress();
         }
     }
 

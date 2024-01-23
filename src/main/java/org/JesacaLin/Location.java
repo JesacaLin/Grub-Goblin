@@ -17,7 +17,7 @@ public class Location {
     }
 
     //getters
-    public static String getLocationName() {
+    public String getLocationName() {
         return locationName;
     }
     public String getStreet() {

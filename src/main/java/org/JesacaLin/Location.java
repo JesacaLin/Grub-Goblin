@@ -17,9 +17,6 @@ public class Location {
         this.state = state;
         this.zip = zip;
     }
-    public Location(String locationName) {
-        Location.locationName = locationName;
-    }
 
     //getters
     public static String getLocationName() {

@@ -34,12 +34,6 @@ public class Deal {
         this.endTime = endTime;
     }
 
-    public Deal(String nameOfDeal, double price, LocalTime startTime) {
-        this.nameOfDeal = nameOfDeal;
-        this.price = price;
-        this.startTime = startTime;
-    }
-
     //Getters
     public String getNameOfDeal() {
         return nameOfDeal;

@@ -23,20 +23,18 @@ public class Main {
         }
     }
 
-    //SHOULD I HAVE THE MAP SORTING HERE?
     public static void main( String[] args ) {
         Scanner scanner = new Scanner(System.in);
 
-        //CREATE MY DATA STRUCTURES UP HERE
+        //DATA STRUCTURES
         Stack<DealEntry> dealStack = new Stack<>();
         Set<String> dealSet = new HashSet<>();
-        List<DealEntry> dealList = new ArrayList<>();
-        //String locationKey = Location.getLocationName();
-        Map<String, List<DealEntry>> dealMap = new HashMap<>();
+        Map<String, ArrayList<DealEntry>> dealMap = new HashMap<>();
 
         System.out.println("Welcome to Grub Goblin! A food deals directory.");
 
         while (true) {
+            //MENU
             System.out.println("Please select from menu: ");
             System.out.println("1: Add a deal");
             System.out.println("2: See all deals");
@@ -45,9 +43,8 @@ public class Main {
             System.out.println("5: Exit");
 
             String menuInput = scanner.nextLine().toLowerCase();
-
+            //ADDING A DEAL
             if (menuInput.equals("1")) {
-                //---------------->LOCATION INFO
                 System.out.println("Name of restaurant: ");
                 String nameOfVenue = scanner.nextLine().toLowerCase();
                 System.out.println("Street: ");
@@ -57,8 +54,6 @@ public class Main {
                 System.out.println("State (ex: New York): ");
                 String state = scanner.nextLine().toLowerCase();
                 System.out.println("Zipcode: ");
-
-                //should I capture the zip as a number or string?
                 int zip = Integer.parseInt(scanner.nextLine());
 
 
@@ -90,16 +85,18 @@ public class Main {
                 //NEED TO ADD AS ONE ENTRY INTO THE DATA STRUCTURE
                 DealEntry newDeal = new DealEntry(location, deal);
 
-                //SPECIALIZED INSTANCES
-                Location locationForList = new Location(nameOfVenue);
-                Deal dealForList = new Deal(nameOfDeal,price, startTime);
-                DealEntry newDealForList = new DealEntry(locationForList, dealForList);
 
                 //ADDING TO DEAL STACK
                 dealStack.push(newDeal);
                 //ADDING RESTAURANT NAME TO SET
                 dealSet.add(nameOfVenue);
-                dealList.add(newDealForList);
+
+                if (dealMap.containsKey(dayOfWeekString)) {
+                    dealMap.put(dayOfWeekString, dealArrayList.add(newDeal));
+                } else {
+                    List<DealEntry> dealArrayList = new ArrayList<>();
+                    dealMap.put(dayOfWeekString, dealArrayList.add(newDeal));
+                }
 
                 //CHECK IF THEY WANT TO KEEP IT OR REMOVE IT
                 System.out.println("Do you want keep or remove the deal you just added? Keep / Remove ");
@@ -110,28 +107,32 @@ public class Main {
                     System.out.println("Your last entry was removed");
                     dealStack.pop();
                     dealSet.remove(nameOfVenue);
+                    //NEED TO REMOVE FROM MAP AS WELL
+                    //CONTINUE INSTEAD?
                     break;
                 }
             }
-
+            //STACK - Master list of all deals
             if (menuInput.equals("2")) {
-                System.out.println("There are currently " + dealStack.size() + " entries in the directory!");
+                System.out.println("There are currently " + dealStack.size() + " food deals in the directory!");
                 for (DealEntry deals : dealStack) {
                     System.out.println(deals);
                 }
             }
-
+            //SET - Will display all restaurants with deals
             if (menuInput.equals("3")) {
-                System.out.println("Set size is: " + dealSet.size());
+                System.out.println("Here is a list of all restaurants with deals!");
                 for (String name : dealSet) {
                     System.out.println(name);
                 }
             }
-
+            //MAP + ARRAYLIST - Sorting deals based on day of the week
             if (menuInput.equals("4")) {
-                //CALL THE SEPARATE CLASS TO SORT MAP HERE?
-            }
+                System.out.println("Please enter a day of the week: ");
+               //display the deals associated to that day
 
+            }
+            //END PROGRAM
             if (menuInput.equals("5")) {
                 break;
             }

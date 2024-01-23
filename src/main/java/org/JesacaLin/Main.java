@@ -1,5 +1,6 @@
 package org.JesacaLin;
-import javax.imageio.plugins.tiff.TIFFImageReadParam;
+import javax.management.monitor.StringMonitor;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -18,7 +19,7 @@ public class Main {
         }
 
         @Override public String toString() {
-            return "Deal: " + deal.getNameOfDeal() + ", available on " + deal.getDayOfWeek() + " from " + deal.getStartTime() + " to " + deal.getEndTime() + " at " + Location.getLocationName() + ": " + location.getFullAddress();
+            return " Location Name: " + Location.getLocationName() + " Date: " + deal.getDayOfWeek() + " Time: " + deal.getStartTime() + " Deal: " + deal.getNameOfDeal() + " Address: " + location.getFullAddress();
         }
     }
 
@@ -50,7 +51,7 @@ public class Main {
                 String street = scanner.nextLine().toLowerCase();
                 System.out.println("City: ");
                 String city = scanner.nextLine().toLowerCase();
-                System.out.println("State (ex: New York): ");
+                System.out.println("State (ex: NY): ");
                 String state = scanner.nextLine().toLowerCase();
                 System.out.println("Zipcode: ");
                 int zip = Integer.parseInt(scanner.nextLine());
@@ -60,65 +61,78 @@ public class Main {
                 System.out.println("Describe the deal:");
                 String nameOfDeal = scanner.nextLine().toLowerCase();
 
-                //TO DO: need to validating price to be double
                 System.out.println("Price (ex: 9.00): ");
                 double price = Double.parseDouble(scanner.nextLine());
 
-                //HOW TO HANDLE MULTIPLE DAYS? Have to convert string to DayOfWeek format
-                System.out.println("Day available:");
-                String dayOfWeekString = scanner.nextLine().toUpperCase();
-                DayOfWeek dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
+                //HOW TO HANDLE MULTIPLE DAYS?
+                DayOfWeek dayOfWeek = null;
+                String dayOfWeekString = null;
 
-                //Need to convert Strings to LocalTime object. REALLY NEED A TRY/CATCH HERE THAT IS A LOOP...
-                System.out.println("Deal start time, use military time (ex 09:00 or 14:00)");
-                String stringStartTime = scanner.nextLine();
-                LocalTime startTime = LocalTime.parse(stringStartTime);
-                System.out.println("Deal end time, use military time (ex 09:00 or 14:00)");
-                String stringEndTime = scanner.nextLine();
-                LocalTime endTime = LocalTime.parse(stringEndTime);
+                while (dayOfWeek == null) {
+                    System.out.println("Enter day of the week deal is available:");
+                    dayOfWeekString = scanner.nextLine().toUpperCase();
+                    try {
+                        dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(dayOfWeekString + " is not a valid day of the week");
+                    }
+                }
+
+                LocalTime startTime = null;
+                while (startTime == null) {
+                    System.out.println("Enter start time (ex: 09:00 or 21:00):");
+                    String stringStartTime = scanner.nextLine();
+                    try {
+                        startTime = LocalTime.parse(stringStartTime);
+                    } catch (DateTimeParseException e) {
+                        System.out.println(stringStartTime + " is not a valid time format");
+                    }
+                }
 
                 //creating general instance from the class
                 Location location = new Location(nameOfVenue, street, city, state, zip);
-                Deal deal = new Deal(nameOfDeal, price, dayOfWeek, startTime, endTime);
+                Deal deal = new Deal(nameOfDeal, price, dayOfWeek, startTime);
 
                 //NEED TO ADD AS ONE ENTRY INTO THE DATA STRUCTURE
                 DealEntry newDeal = new DealEntry(location, deal);
 
+                //SAVING TO DIRECTORY
+                System.out.println("Save this deal to the directory? Y = Yes / S = Start over / D = Delete last saved deal");
+                String yesOrNo = scanner.nextLine().toLowerCase();
+                switch (yesOrNo) {
+                    case "y" -> {
+                        //ADDING TO STACK
+                        dealStack.push(newDeal);
 
-                //ADDING TO DEAL STACK
-                dealStack.push(newDeal);
+                        //ADDING RESTAURANT NAME TO SET
+                        dealSet.add(nameOfVenue);
 
-                //ADDING RESTAURANT NAME TO SET
-                dealSet.add(nameOfVenue);
-
-                if (dealMap.containsKey(dayOfWeekString)) {
-                    ArrayList<DealEntry> dealArrayList = dealMap.get(dayOfWeekString);
-                    dealArrayList.add(newDeal);
-                } else {
-                    ArrayList<DealEntry> dealArrayList = new ArrayList<>();
-                    dealArrayList.add(newDeal);
-                    dealMap.put(dayOfWeekString, dealArrayList);
+                        if (dealMap.containsKey(dayOfWeekString)) {
+                            ArrayList<DealEntry> dealArrayList = dealMap.get(dayOfWeekString);
+                            dealArrayList.add(newDeal);
+                        } else {
+                            ArrayList<DealEntry> dealArrayList = new ArrayList<>();
+                            dealArrayList.add(newDeal);
+                            dealMap.put(dayOfWeekString, dealArrayList);
+                        }
+                        System.out.println("Your entry was saved: " + dealStack.peek());
+                    }
+                    case "s" -> {
+                        System.out.println("Ok! Starting over!");
+                        continue;
+                    }
+                    case "d" -> {
+                        System.out.println("Your last entry was removed");
+                        dealStack.pop();
+                    }
                 }
-                System.out.println("Your entry was added: " + dealStack.peek());
-
-
             }
             //STACK - Master list of all deals
             if (menuInput.equals("2")) {
-                System.out.println("Do you want to remove the most recent deal added? Y / N");
-                String toSaveOrNot = scanner.nextLine().toLowerCase();
-                if (toSaveOrNot.equals("n")) {
-                    System.out.println("There are " + dealStack.size() + " food deals in the directory!");
-                    for (DealEntry deals : dealStack) {
-                        System.out.println(deals);
-                    }
-                } else if (toSaveOrNot.equals("y") && !dealStack.isEmpty()) {
-                    System.out.println("Your last entry was removed");
-                    DealEntry poppedDeal = dealStack.pop();
-                    dealSet.remove(removedDeal.getLocationName());
-                    //NEED TO REMOVE FROM MAP AS WELL
-                    //CONTINUE INSTEAD?
-                    break;
+                String message = dealStack.size() > 1 ? "There are " : "There is ";
+                System.out.println(message + dealStack.size() + " food deals in the directory!");
+                for (DealEntry deals : dealStack) {
+                    System.out.println(deals);
                 }
             }
             //SET - Will display all restaurants with deals
@@ -132,7 +146,6 @@ public class Main {
             if (menuInput.equals("4")) {
                 System.out.println("Please enter a day of the week: ");
                 String dayInput = scanner.nextLine().toUpperCase();
-               //display the deals associated to that day
                 if (dealMap.containsKey(dayInput)) {
                     ArrayList<DealEntry> currentList = dealMap.get(dayInput);
                     for (DealEntry deal : currentList) {
@@ -141,7 +154,6 @@ public class Main {
                 } else {
                     System.out.println("There are no deals on that day!");
                 }
-
             }
             //END PROGRAM
             if (menuInput.equals("5")) {

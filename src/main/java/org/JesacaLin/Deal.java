@@ -5,14 +5,12 @@ import java.time.LocalTime;
 import java.util.*;
 public class Deal {
     //create the variables
-    private String nameOfDeal;
-    private double price;
-    private DayOfWeek dayOfWeek;
+    private final String nameOfDeal;
+    private final double price;
+    private final DayOfWeek dayOfWeek;
     private LocalTime startTime;
-    private LocalTime endTime;
-    private org.JesacaLin.Location location; //you have to bring in data from other classes to be able to use it in this class...
+    private org.JesacaLin.Location location;
 
-    //create the constructor? - do I need stacked constructors?
     public Deal(String nameOfDeal, double price, DayOfWeek dayOfWeek) {
         this.nameOfDeal = nameOfDeal;
         this.price = price;
@@ -31,7 +29,6 @@ public class Deal {
         this.price = price;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     //Getters
@@ -44,20 +41,15 @@ public class Deal {
     public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
     }
-
     public LocalTime getStartTime() {
         return startTime;
     }
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-    //getter also needed for data that lives outside of the current Class!
     public org.JesacaLin.Location getLocation() {
         return location;
     }
 
     //methods?
     @Override public String toString() {
-        return nameOfDeal + ", available on " + dayOfWeek + " from " + startTime + " to " + endTime;
+        return nameOfDeal + ", available on " + dayOfWeek + " at " + startTime;
     }
 }

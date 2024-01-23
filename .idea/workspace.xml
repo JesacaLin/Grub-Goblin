@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="07f96299-3088-49a5-a19d-481752a28972" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/JesacaLin/Deal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/JesacaLin/Deal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/JesacaLin/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/JesacaLin/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/JesacaLin/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/JesacaLin/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +24,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",

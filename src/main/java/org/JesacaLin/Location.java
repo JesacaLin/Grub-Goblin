@@ -1,7 +1,7 @@
 package org.JesacaLin;
 
 public class Location {
-    private static String locationName;
+    private final String locationName;
     private final String street;
     private final String city;
     private final String state;
@@ -9,7 +9,7 @@ public class Location {
 
     //constructor
     public Location(String locationName, String street, String city, String state, int zip) {
-        Location.locationName = locationName;
+        this.locationName = locationName;
         this.street = street;
         this.city = city;
         this.state = state;

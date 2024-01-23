@@ -8,15 +8,9 @@ public class Deal {
     private final String nameOfDeal;
     private final double price;
     private final DayOfWeek dayOfWeek;
-    private LocalTime startTime;
+    private final LocalTime startTime;
     private org.JesacaLin.Location location;
 
-    public Deal(String nameOfDeal, double price, DayOfWeek dayOfWeek) {
-        this.nameOfDeal = nameOfDeal;
-        this.price = price;
-        this.dayOfWeek = dayOfWeek;
-
-    }
     public Deal(String nameOfDeal, double price, DayOfWeek dayOfWeek, LocalTime startTime) {
         this.nameOfDeal = nameOfDeal;
         this.price = price;
@@ -24,12 +18,6 @@ public class Deal {
         this.startTime = startTime;
     }
 
-    public Deal(String nameOfDeal, double price, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
-        this.nameOfDeal = nameOfDeal;
-        this.price = price;
-        this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime;
-    }
 
     //Getters
     public String getNameOfDeal() {

@@ -1,7 +1,6 @@
 package org.JesacaLin;
+import javax.imageio.plugins.tiff.TIFFImageReadParam;
 import java.util.*;
-import javax.swing.text.SimpleAttributeSet;
-import java.sql.SQLOutput;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Scanner;
@@ -35,7 +34,7 @@ public class Main {
 
         while (true) {
             //MENU
-            System.out.println("Please select from menu: ");
+            System.out.println("Please enter your selection from the menu: ");
             System.out.println("1: Add a deal");
             System.out.println("2: See all deals");
             System.out.println("3: See all restaurants in the database");
@@ -88,6 +87,7 @@ public class Main {
 
                 //ADDING TO DEAL STACK
                 dealStack.push(newDeal);
+
                 //ADDING RESTAURANT NAME TO SET
                 dealSet.add(nameOfVenue);
 
@@ -99,26 +99,26 @@ public class Main {
                     dealArrayList.add(newDeal);
                     dealMap.put(dayOfWeekString, dealArrayList);
                 }
+                System.out.println("Your entry was added: " + dealStack.peek());
 
-                //CHECK IF THEY WANT TO KEEP IT OR REMOVE IT
-                System.out.println("Do you want keep or remove the deal you just added? Keep / Remove ");
-                String toSaveOrNot = scanner.nextLine().toLowerCase();
-                if (toSaveOrNot.equals("keep")) {
-                    System.out.println("This entry was added: " + dealStack.peek());
-                } else if (toSaveOrNot.equals("remove")) {
-                    System.out.println("Your last entry was removed");
-                    dealStack.pop();
-                    dealSet.remove(nameOfVenue);
-                    //NEED TO REMOVE FROM MAP AS WELL
-                    //CONTINUE INSTEAD?
-                    break;
-                }
+
             }
             //STACK - Master list of all deals
             if (menuInput.equals("2")) {
-                System.out.println("There are currently " + dealStack.size() + " food deals in the directory!");
-                for (DealEntry deals : dealStack) {
-                    System.out.println(deals);
+                System.out.println("Do you want to remove the most recent deal added? Y / N");
+                String toSaveOrNot = scanner.nextLine().toLowerCase();
+                if (toSaveOrNot.equals("n")) {
+                    System.out.println("There are " + dealStack.size() + " food deals in the directory!");
+                    for (DealEntry deals : dealStack) {
+                        System.out.println(deals);
+                    }
+                } else if (toSaveOrNot.equals("y") && !dealStack.isEmpty()) {
+                    System.out.println("Your last entry was removed");
+                    DealEntry poppedDeal = dealStack.pop();
+                    dealSet.remove(removedDeal.getLocationName());
+                    //NEED TO REMOVE FROM MAP AS WELL
+                    //CONTINUE INSTEAD?
+                    break;
                 }
             }
             //SET - Will display all restaurants with deals
@@ -131,7 +131,16 @@ public class Main {
             //MAP + ARRAYLIST - Sorting deals based on day of the week
             if (menuInput.equals("4")) {
                 System.out.println("Please enter a day of the week: ");
+                String dayInput = scanner.nextLine().toUpperCase();
                //display the deals associated to that day
+                if (dealMap.containsKey(dayInput)) {
+                    ArrayList<DealEntry> currentList = dealMap.get(dayInput);
+                    for (DealEntry deal : currentList) {
+                        System.out.println(deal);
+                    }
+                } else {
+                    System.out.println("There are no deals on that day!");
+                }
 
             }
             //END PROGRAM

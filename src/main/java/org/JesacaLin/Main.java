@@ -66,12 +66,21 @@ public class Main {
                 //HOW TO HANDLE MULTIPLE DAYS?
                 DayOfWeek dayOfWeek = null;
                 String dayOfWeekString = null;
+                List<DayOfWeek> daysArray = new ArrayList<>();
 
                 while (dayOfWeek == null) {
-                    System.out.println("Enter day of the week deal is available:");
-                    dayOfWeekString = scanner.nextLine().toUpperCase();
                     try {
-                        dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
+                        while (true) {
+                            System.out.println("Enter day of the week the deal is available or enter N to move on:");
+                            dayOfWeekString = scanner.nextLine().toUpperCase();
+                            if (!dayOfWeekString.equals("N")) {
+                                dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
+                                daysArray.add(dayOfWeek);
+                                System.out.println("Current size of daysArray is: " + daysArray.size());
+                            } else {
+                                break;
+                            }
+                        }
                     } catch (IllegalArgumentException e) {
                         System.out.println(dayOfWeekString + " is not a valid day of the week");
                     }
@@ -88,7 +97,7 @@ public class Main {
                     }
                 }
 
-                //creating general instance from the class
+                //CREATING INSTANCES FROM THE CLASS CONSTRUCTORS
                 Location location = new Location(nameOfVenue, street, city, state, zip);
                 Deal deal = new Deal(nameOfDeal, price, dayOfWeek, startTime);
 

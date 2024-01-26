@@ -66,16 +66,16 @@ public class Main {
                 //HOW TO HANDLE MULTIPLE DAYS?
                 DayOfWeek dayOfWeek = null;
                 String dayOfWeekString = null;
-                List<DayOfWeek> daysArray = new ArrayList<>();
+                List<String> daysArray = new ArrayList<>();
 
-                while (dayOfWeek == null) {
+                while (dayOfWeekString == null) {
                     try {
                         while (true) {
                             System.out.println("Enter day of the week the deal is available or enter N to move on:");
                             dayOfWeekString = scanner.nextLine().toUpperCase();
                             if (!dayOfWeekString.equals("N")) {
-                                dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
-                                daysArray.add(dayOfWeek);
+                                //dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
+                                daysArray.add(dayOfWeekString);
                                 System.out.println("Current size of daysArray is: " + daysArray.size());
                             } else {
                                 break;
@@ -97,33 +97,35 @@ public class Main {
                     }
                 }
 
-                //CREATING INSTANCES FROM THE CLASS CONSTRUCTORS
-                Location location = new Location(nameOfVenue, street, city, state, zip);
-                Deal deal = new Deal(nameOfDeal, price, dayOfWeek, startTime);
-
-                //NEED TO ADD AS ONE ENTRY INTO THE DATA STRUCTURE
-                DealEntry newDeal = new DealEntry(location, deal);
-
                 //SAVING TO DIRECTORY
                 System.out.println("Save this deal to the directory? Y = Yes / S = Start over / D = Delete last saved deal");
                 String yesOrNo = scanner.nextLine().toLowerCase();
                 switch (yesOrNo) {
                     case "y" -> {
-                        //ADDING TO STACK
-                        dealStack.push(newDeal);
+                        //I THINK I NEED TO ITERATE THROUGH THE DAYS ARRAY AND ASSIGN DayOfWeek to elements in the array.
+                        for (String day : daysArray) {
+                            //CREATING INSTANCES FROM THE CLASS CONSTRUCTORS
+                            Location location = new Location(nameOfVenue, street, city, state, zip);
+                            Deal deal = new Deal(nameOfDeal, price, day, startTime);
 
-                        //ADDING RESTAURANT NAME TO SET
-                        dealSet.add(nameOfVenue);
+                            //NEED TO ADD AS ONE ENTRY INTO THE DATA STRUCTURE
+                            DealEntry newDeal = new DealEntry(location, deal);
+                            //ADDING TO STACK
+                            dealStack.push(newDeal);
 
-                        if (dealMap.containsKey(dayOfWeekString)) {
-                            ArrayList<DealEntry> dealArrayList = dealMap.get(dayOfWeekString);
-                            dealArrayList.add(newDeal);
-                        } else {
-                            ArrayList<DealEntry> dealArrayList = new ArrayList<>();
-                            dealArrayList.add(newDeal);
-                            dealMap.put(dayOfWeekString, dealArrayList);
+                            //ADDING RESTAURANT NAME TO SET
+                            dealSet.add(nameOfVenue);
+
+                            if (dealMap.containsKey(day)) {
+                                ArrayList<DealEntry> dealArrayList = dealMap.get(day);
+                                dealArrayList.add(newDeal);
+                            } else {
+                                ArrayList<DealEntry> dealArrayList = new ArrayList<>();
+                                dealArrayList.add(newDeal);
+                                dealMap.put(day, dealArrayList);
+                            }
+                            System.out.println("Your entry was saved: " + dealStack.peek());
                         }
-                        System.out.println("Your entry was saved: " + dealStack.peek());
                     }
                     case "s" -> {
                         System.out.println("Ok! Starting over!");

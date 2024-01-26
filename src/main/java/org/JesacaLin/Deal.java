@@ -7,11 +7,11 @@ public class Deal {
     //create the variables
     private final String nameOfDeal;
     private final double price;
-    private final DayOfWeek dayOfWeek;
+    private final String dayOfWeek;
     private final LocalTime startTime;
     private org.JesacaLin.Location location;
 
-    public Deal(String nameOfDeal, double price, DayOfWeek dayOfWeek, LocalTime startTime) {
+    public Deal(String nameOfDeal, double price, String dayOfWeek, LocalTime startTime) {
         this.nameOfDeal = nameOfDeal;
         this.price = price;
         this.dayOfWeek = dayOfWeek;
@@ -26,7 +26,7 @@ public class Deal {
     public double getPrice() {
         return price;
     }
-    public DayOfWeek getDayOfWeek() {
+    public String getDayOfWeek() {
         return dayOfWeek;
     }
     public LocalTime getStartTime() {

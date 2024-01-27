@@ -1,4 +1,5 @@
 package org.JesacaLin;
+
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.time.DayOfWeek;
@@ -8,7 +9,7 @@ import java.util.Stack;
 
 
 public class Main {
-    
+
     //HELPER FUNCTIONS HERE
     public static String getStringInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
@@ -16,7 +17,7 @@ public class Main {
         return scanner.nextLine().toLowerCase();
     }
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         //DATA STRUCTURES
@@ -27,7 +28,7 @@ public class Main {
         while (true) {
             //MENU - Intellij suggested I change it to a text block.
             String menu = ("""
-                    
+                                        
                     -------------------------------------------------
                     |   GRUB GOBLIN: Your Food Deals Directory      |
                     -------------------------------------------------
@@ -35,7 +36,7 @@ public class Main {
                     -------------------------------------------------
                     | 1: Add a deal                                 |
                     | 2: See all deals                              |
-                    | 3: See all restaurants with deals        |
+                    | 3: See all restaurants with deals             |
                     | 4: See deals on a specific date               |
                     | 5: Exit                                       |
                     -------------------------------------------------
@@ -67,17 +68,15 @@ public class Main {
                 List<DayOfWeek> daysArray = new ArrayList<>();
 
                 //NEED TO FIX: If the user inputs an invalid day of the week, it breaks the loop and skips to entering the time instead of continuing to ask for valid days or end the process... Pro is that the invalid date is NOT added. Try to fix this with a method.
-                while (dayOfWeek == null) {
+                while (true) {
                     try {
-                        while (true) {
-                            dayOfWeekString = getStringInput("Enter day of the week the deal is available or enter END when you are done:").toUpperCase();
-                            if (!dayOfWeekString.equals("END")) {
-                                dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
-                                daysArray.add(dayOfWeek);
-                                System.out.println("Current size of daysArray is: " + daysArray.size());
-                            } else {
-                                break;
-                            }
+                        dayOfWeekString = getStringInput("Enter day of the week the deal is available or enter END when you are done:").toUpperCase();
+                        if (!dayOfWeekString.equals("END")) {
+                            dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
+                            daysArray.add(dayOfWeek);
+                            System.out.println("Current size of daysArray is: " + daysArray.size());
+                        } else {
+                            break;
                         }
                     } catch (IllegalArgumentException e) {
                         System.out.println(dayOfWeekString + " is not a valid day of the week");
@@ -99,7 +98,7 @@ public class Main {
                         -----------------------------------------
                         |   Save this deal to the directory?    |
                         -----------------------------------------
-                        | 1: Save                                |
+                        | 1: Save                               |
                         | 2: Start over                         |
                         | 3: Delete last saved deal             |
                         -----------------------------------------
@@ -177,7 +176,6 @@ public class Main {
                         System.out.println(dayInputConverted + " is not a valid day of the week");
                     }
                 }
-
             }
             //END PROGRAM
             if (menuInput.equals("5")) {

@@ -67,7 +67,6 @@ public class Main {
                 String dayOfWeekString = null;
                 List<DayOfWeek> daysArray = new ArrayList<>();
 
-                //NEED TO FIX: If the user inputs an invalid day of the week, it breaks the loop and skips to entering the time instead of continuing to ask for valid days or end the process... Pro is that the invalid date is NOT added. Try to fix this with a method.
                 while (true) {
                     try {
                         dayOfWeekString = getStringInput("Enter day of the week the deal is available or enter END when you are done:").toUpperCase();

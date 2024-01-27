@@ -28,7 +28,7 @@ public class Main {
         //DATA STRUCTURES
         Stack<DealEntry> dealStack = new Stack<>();
         Set<String> dealSet = new HashSet<>();
-        Map<String, ArrayList<DealEntry>> dealMap = new HashMap<>();
+        Map<DayOfWeek, ArrayList<DealEntry>> dealMap = new HashMap<>();
 
         System.out.println("Welcome to Grub Goblin! A food deals directory.");
 
@@ -66,16 +66,16 @@ public class Main {
                 //HOW TO HANDLE MULTIPLE DAYS?
                 DayOfWeek dayOfWeek = null;
                 String dayOfWeekString = null;
-                List<String> daysArray = new ArrayList<>();
+                List<DayOfWeek> daysArray = new ArrayList<>();
 
-                while (dayOfWeekString == null) {
+                while (dayOfWeek == null) {
                     try {
                         while (true) {
                             System.out.println("Enter day of the week the deal is available or enter N to move on:");
                             dayOfWeekString = scanner.nextLine().toUpperCase();
                             if (!dayOfWeekString.equals("N")) {
-                                //dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
-                                daysArray.add(dayOfWeekString);
+                                dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
+                                daysArray.add(dayOfWeek);
                                 System.out.println("Current size of daysArray is: " + daysArray.size());
                             } else {
                                 break;
@@ -96,14 +96,14 @@ public class Main {
                         System.out.println(stringStartTime + " is not a valid time format");
                     }
                 }
-
+                //WORKS WITH STRINGS...
                 //SAVING TO DIRECTORY
                 System.out.println("Save this deal to the directory? Y = Yes / S = Start over / D = Delete last saved deal");
                 String yesOrNo = scanner.nextLine().toLowerCase();
                 switch (yesOrNo) {
                     case "y" -> {
                         //I THINK I NEED TO ITERATE THROUGH THE DAYS ARRAY AND ASSIGN DayOfWeek to elements in the array.
-                        for (String day : daysArray) {
+                        for (DayOfWeek day : daysArray) {
                             //CREATING INSTANCES FROM THE CLASS CONSTRUCTORS
                             Location location = new Location(nameOfVenue, street, city, state, zip);
                             Deal deal = new Deal(nameOfDeal, price, day, startTime);
@@ -154,16 +154,27 @@ public class Main {
             }
             //MAP + ARRAYLIST - Sorting deals based on day of the week
             if (menuInput.equals("4")) {
-                System.out.println("Please enter a day of the week: ");
-                String dayInput = scanner.nextLine().toUpperCase();
-                if (dealMap.containsKey(dayInput)) {
-                    ArrayList<DealEntry> currentList = dealMap.get(dayInput);
-                    for (DealEntry deal : currentList) {
-                        System.out.println(deal);
+                DayOfWeek dayInputConverted = null;
+                
+                while (dayInputConverted == null) {
+                    try {
+                        System.out.println("Please enter a day of the week: ");
+                        String dayInput = scanner.nextLine().toUpperCase();
+                        dayInputConverted = DayOfWeek.valueOf(dayInput);
+                        if (dealMap.containsKey(dayInputConverted)) {
+                            ArrayList<DealEntry> currentList = dealMap.get(dayInputConverted);
+                            for (DealEntry deal : currentList) {
+                                System.out.println(deal);
+                            }
+                        } else {
+                            System.out.println("There are no deals on that day!");
+                        }
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(dayInputConverted + " is not a valid day of the week");
                     }
-                } else {
-                    System.out.println("There are no deals on that day!");
                 }
+
             }
             //END PROGRAM
             if (menuInput.equals("5")) {

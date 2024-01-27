@@ -56,14 +56,14 @@ public class Main {
                 int zip = Integer.parseInt(scanner.nextLine());
 
 
-                //---------------->DEAL INFO
+                //DEAL DETAILS
                 System.out.println("Describe the deal:");
                 String nameOfDeal = scanner.nextLine().toLowerCase();
-
+                //DEAL PRICE
                 System.out.println("Price (ex: 9.00): ");
                 double price = Double.parseDouble(scanner.nextLine());
 
-                //HOW TO HANDLE MULTIPLE DAYS?
+                //HANDLE SAME DEAL AVAILABLE ON MULTIPLE DAYS BY PLACING DAYS INTO AN ARRAYLIST
                 DayOfWeek dayOfWeek = null;
                 String dayOfWeekString = null;
                 List<DayOfWeek> daysArray = new ArrayList<>();
@@ -71,9 +71,9 @@ public class Main {
                 while (dayOfWeek == null) {
                     try {
                         while (true) {
-                            System.out.println("Enter day of the week the deal is available or enter N to move on:");
+                            System.out.println("Enter day of the week the deal is available or enter END when you are done:");
                             dayOfWeekString = scanner.nextLine().toUpperCase();
-                            if (!dayOfWeekString.equals("N")) {
+                            if (!dayOfWeekString.equals("END")) {
                                 dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
                                 daysArray.add(dayOfWeek);
                                 System.out.println("Current size of daysArray is: " + daysArray.size());
@@ -85,7 +85,7 @@ public class Main {
                         System.out.println(dayOfWeekString + " is not a valid day of the week");
                     }
                 }
-
+                //START TIME OF DEAL
                 LocalTime startTime = null;
                 while (startTime == null) {
                     System.out.println("Enter start time (ex: 09:00 or 21:00):");
@@ -96,13 +96,13 @@ public class Main {
                         System.out.println(stringStartTime + " is not a valid time format");
                     }
                 }
-                //WORKS WITH STRINGS...
+
                 //SAVING TO DIRECTORY
                 System.out.println("Save this deal to the directory? Y = Yes / S = Start over / D = Delete last saved deal");
                 String yesOrNo = scanner.nextLine().toLowerCase();
                 switch (yesOrNo) {
                     case "y" -> {
-                        //I THINK I NEED TO ITERATE THROUGH THE DAYS ARRAY AND ASSIGN DayOfWeek to elements in the array.
+                        //ITERATE THROUGH daysArray AND CREATE AN ENTRY WITH EACH ELEMENT IN THE ARRAY
                         for (DayOfWeek day : daysArray) {
                             //CREATING INSTANCES FROM THE CLASS CONSTRUCTORS
                             Location location = new Location(nameOfVenue, street, city, state, zip);
@@ -137,7 +137,7 @@ public class Main {
                     }
                 }
             }
-            //STACK - Master list of all deals
+            //STACK - MASTER LIST OF ALL DEALS
             if (menuInput.equals("2")) {
                 String message = dealStack.size() > 1 ? "There are " : "There is ";
                 System.out.println(message + dealStack.size() + " food deals in the directory!");
@@ -145,17 +145,17 @@ public class Main {
                     System.out.println(deals);
                 }
             }
-            //SET - Will display all restaurants with deals
+            //SET - WILL DISPLAY ALL RESTAURANTS WITH DEALS
             if (menuInput.equals("3")) {
                 System.out.println("Here is a list of all restaurants with deals!");
                 for (String name : dealSet) {
                     System.out.println(name);
                 }
             }
-            //MAP + ARRAYLIST - Sorting deals based on day of the week
+            //MAP + ARRAYLIST - SORTING AND DISPLAYING DEALS FOR SPECIFIC DAYS OF THE WEEK
             if (menuInput.equals("4")) {
                 DayOfWeek dayInputConverted = null;
-                
+
                 while (dayInputConverted == null) {
                     try {
                         System.out.println("Please enter a day of the week: ");

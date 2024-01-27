@@ -8,19 +8,7 @@ import java.util.Stack;
 
 
 public class Main {
-
-    static class DealEntry {
-        Location location;
-        Deal deal;
-        DealEntry (Location location,  Deal deal) {
-            this.location = location;
-            this.deal = deal;
-        }
-
-        @Override public String toString() {
-            return " Venue: " + location.getLocationName() + " Date: " + deal.getDayOfWeek() + " Time: " + deal.getStartTime() + " Deal: " + deal.getNameOfDeal() + " Address: " + location.getFullAddress();
-        }
-    }
+    
     //HELPER FUNCTIONS HERE
     public static String getStringInput(String prompt) {
         Scanner scanner = new Scanner(System.in);

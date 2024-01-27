@@ -10,10 +10,19 @@ import java.util.Stack;
 
 public class Main {
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+
     //HELPER FUNCTIONS HERE
     public static String getStringInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(prompt);
+        System.out.println(ANSI_PURPLE + prompt + ANSI_RESET);
         return scanner.nextLine().toLowerCase();
     }
 
@@ -45,21 +54,20 @@ public class Main {
             String menuInput = getStringInput(menu);
 
             //ADDING A DEAL
-            //let's make method that prints the prompt, then saves the input, returns it.
             if (menuInput.equals("1")) {
                 String nameOfVenue = getStringInput("Name of restaurant:");
                 String street = getStringInput("Street:");
                 String city = getStringInput("City:");
                 String state = getStringInput("State (ex: NY):");
                 //NUMBER HERE ---->
-                System.out.println("Zipcode: ");
+                System.out.println(ANSI_PURPLE + "Zipcode: " + ANSI_RESET);
                 int zip = Integer.parseInt(scanner.nextLine());
 
 
                 //DEAL DETAILS
                 String nameOfDeal = getStringInput("Describe the deal:");
                 //DEAL PRICE ---->
-                System.out.println("Price (ex: 9.00): ");
+                System.out.println(ANSI_PURPLE + "Price (ex: 9.00): " + ANSI_RESET);
                 double price = Double.parseDouble(scanner.nextLine());
 
                 //HANDLE SAME DEAL AVAILABLE ON MULTIPLE DAYS BY PLACING DAYS INTO AN ARRAYLIST
@@ -73,22 +81,22 @@ public class Main {
                         if (!dayOfWeekString.equals("END")) {
                             dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
                             daysArray.add(dayOfWeek);
-                            System.out.println("Current size of daysArray is: " + daysArray.size());
+                            System.out.println(ANSI_YELLOW + "Current size of daysArray is: " + daysArray.size() + ANSI_RESET);
                         } else {
                             break;
                         }
                     } catch (IllegalArgumentException e) {
-                        System.out.println(dayOfWeekString + " is not a valid day of the week");
+                        System.out.println(ANSI_RED + dayOfWeekString + " is not a valid day of the week" + ANSI_RESET);
                     }
                 }
                 //START TIME OF DEAL - can this also be a method?
                 LocalTime startTime = null;
                 while (startTime == null) {
-                    String stringStartTime = getStringInput("Enter start time (ex: 09:00 or 21:00):");
+                    String stringStartTime = getStringInput(ANSI_PURPLE + "Enter start time (ex: 09:00 or 21:00):" + ANSI_RESET);
                     try {
                         startTime = LocalTime.parse(stringStartTime);
                     } catch (DateTimeParseException e) {
-                        System.out.println(stringStartTime + " is not a valid time format");
+                        System.out.println(ANSI_RED + stringStartTime + " is not a valid time format" + ANSI_RESET);
                     }
                 }
 
@@ -126,15 +134,15 @@ public class Main {
                                 dealArrayList.add(newDeal);
                                 dealMap.put(day, dealArrayList);
                             }
-                            System.out.println("Your entry was saved: " + dealStack.peek());
+                            System.out.println(ANSI_YELLOW + "Your entry was saved: " + dealStack.peek() + ANSI_RESET);
                         }
                     }
                     case "2" -> {
-                        System.out.println("Ok! Starting over!");
+                        System.out.println(ANSI_YELLOW + "Ok! Starting over!" + ANSI_RESET);
                         continue;
                     }
                     case "3" -> {
-                        System.out.println("Your last entry was removed");
+                        System.out.println(ANSI_YELLOW + "Your last entry was removed" + ANSI_RESET);
                         dealStack.pop();
                     }
                 }
@@ -142,16 +150,16 @@ public class Main {
             //STACK - MASTER LIST OF ALL DEALS
             if (menuInput.equals("2")) {
                 String message = dealStack.size() > 1 ? "There are " : "There is ";
-                System.out.println(message + dealStack.size() + " food deals in the directory!");
+                System.out.println(ANSI_YELLOW + message + dealStack.size() + " food deals in the directory!" + ANSI_RESET);
                 for (DealEntry deals : dealStack) {
-                    System.out.println(deals);
+                    System.out.println(ANSI_CYAN + deals + ANSI_RESET);
                 }
             }
             //SET - WILL DISPLAY ALL RESTAURANTS WITH DEALS
             if (menuInput.equals("3")) {
-                System.out.println("Here is a list of all restaurants with deals!");
+                System.out.println(ANSI_YELLOW + "Here is a list of all restaurants with deals!" + ANSI_RESET);
                 for (String name : dealSet) {
-                    System.out.println(name);
+                    System.out.println(ANSI_CYAN + name + ANSI_RESET);
                 }
             }
             //MAP + ARRAYLIST - SORTING AND DISPLAYING DEALS FOR SPECIFIC DAYS OF THE WEEK
@@ -165,14 +173,14 @@ public class Main {
                         if (dealMap.containsKey(dayInputConverted)) {
                             ArrayList<DealEntry> currentList = dealMap.get(dayInputConverted);
                             for (DealEntry deal : currentList) {
-                                System.out.println(deal);
+                                System.out.println(ANSI_CYAN + deal + ANSI_RESET);
                             }
                         } else {
-                            System.out.println("There are no deals on that day!");
+                            System.out.println(ANSI_RED + "There are no deals on that day!" + ANSI_RESET);
                         }
 
                     } catch (IllegalArgumentException e) {
-                        System.out.println(dayInputConverted + " is not a valid day of the week");
+                        System.out.println(ANSI_RED + dayInputConverted + " is not a valid day of the week" + ANSI_RESET);
                     }
                 }
             }

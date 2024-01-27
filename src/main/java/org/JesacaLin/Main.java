@@ -21,6 +21,12 @@ public class Main {
             return " Venue: " + location.getLocationName() + " Date: " + deal.getDayOfWeek() + " Time: " + deal.getStartTime() + " Deal: " + deal.getNameOfDeal() + " Address: " + location.getFullAddress();
         }
     }
+    //HELPER FUNCTIONS HERE
+    public static String getStringInput(String prompt) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(prompt);
+        return scanner.nextLine().toLowerCase();
+    }
 
     public static void main( String[] args ) {
         Scanner scanner = new Scanner(System.in);
@@ -30,36 +36,40 @@ public class Main {
         Set<String> dealSet = new HashSet<>();
         Map<DayOfWeek, ArrayList<DealEntry>> dealMap = new HashMap<>();
 
-        System.out.println("Welcome to Grub Goblin! A food deals directory.");
-
         while (true) {
-            //MENU
-            System.out.println("Please enter your selection from the menu: ");
-            System.out.println("1: Add a deal");
-            System.out.println("2: See all deals");
-            System.out.println("3: See all restaurants in the database");
-            System.out.println("4: See deals on a specific date");
-            System.out.println("5: Exit");
+            //MENU - Intellij suggested I change it to a text block.
+            String menu = ("""
+                    
+                    -------------------------------------------------
+                    |   GRUB GOBLIN: Your Food Deals Directory      |
+                    -------------------------------------------------
+                    |  Please enter your selection from the menu    |
+                    -------------------------------------------------
+                    | 1: Add a deal                                 |
+                    | 2: See all deals                              |
+                    | 3: See all restaurants with deals        |
+                    | 4: See deals on a specific date               |
+                    | 5: Exit                                       |
+                    -------------------------------------------------
+                    """);
+            //String menuInput = scanner.nextLine().toLowerCase();
+            String menuInput = getStringInput(menu);
 
-            String menuInput = scanner.nextLine().toLowerCase();
             //ADDING A DEAL
+            //let's make method that prints the prompt, then saves the input, returns it.
             if (menuInput.equals("1")) {
-                System.out.println("Name of restaurant: ");
-                String nameOfVenue = scanner.nextLine().toLowerCase();
-                System.out.println("Street: ");
-                String street = scanner.nextLine().toLowerCase();
-                System.out.println("City: ");
-                String city = scanner.nextLine().toLowerCase();
-                System.out.println("State (ex: NY): ");
-                String state = scanner.nextLine().toLowerCase();
+                String nameOfVenue = getStringInput("Name of restaurant:");
+                String street = getStringInput("Street:");
+                String city = getStringInput("City:");
+                String state = getStringInput("State (ex: NY):");
+                //NUMBER HERE ---->
                 System.out.println("Zipcode: ");
                 int zip = Integer.parseInt(scanner.nextLine());
 
 
                 //DEAL DETAILS
-                System.out.println("Describe the deal:");
-                String nameOfDeal = scanner.nextLine().toLowerCase();
-                //DEAL PRICE
+                String nameOfDeal = getStringInput("Describe the deal:");
+                //DEAL PRICE ---->
                 System.out.println("Price (ex: 9.00): ");
                 double price = Double.parseDouble(scanner.nextLine());
 
@@ -68,12 +78,11 @@ public class Main {
                 String dayOfWeekString = null;
                 List<DayOfWeek> daysArray = new ArrayList<>();
 
-                //NEED TO FIX: If the user inputs an invalid day of the week, it breaks the loop and skips to entering the time instead of continuing to ask for valid days or end the process... Pro is that the invalid date is NOT added.
+                //NEED TO FIX: If the user inputs an invalid day of the week, it breaks the loop and skips to entering the time instead of continuing to ask for valid days or end the process... Pro is that the invalid date is NOT added. Try to fix this with a method.
                 while (dayOfWeek == null) {
                     try {
                         while (true) {
-                            System.out.println("Enter day of the week the deal is available or enter END when you are done:");
-                            dayOfWeekString = scanner.nextLine().toUpperCase();
+                            dayOfWeekString = getStringInput("Enter day of the week the deal is available or enter END when you are done:").toUpperCase();
                             if (!dayOfWeekString.equals("END")) {
                                 dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
                                 daysArray.add(dayOfWeek);
@@ -86,11 +95,10 @@ public class Main {
                         System.out.println(dayOfWeekString + " is not a valid day of the week");
                     }
                 }
-                //START TIME OF DEAL
+                //START TIME OF DEAL - can this also be a method?
                 LocalTime startTime = null;
                 while (startTime == null) {
-                    System.out.println("Enter start time (ex: 09:00 or 21:00):");
-                    String stringStartTime = scanner.nextLine();
+                    String stringStartTime = getStringInput("Enter start time (ex: 09:00 or 21:00):");
                     try {
                         startTime = LocalTime.parse(stringStartTime);
                     } catch (DateTimeParseException e) {
@@ -99,10 +107,17 @@ public class Main {
                 }
 
                 //SAVING TO DIRECTORY
-                System.out.println("Save this deal to the directory? Y = Yes / S = Start over / D = Delete last saved deal");
-                String yesOrNo = scanner.nextLine().toLowerCase();
+                String yesOrNo = getStringInput("""
+                        -----------------------------------------
+                        |   Save this deal to the directory?    |
+                        -----------------------------------------
+                        | 1: Save                                |
+                        | 2: Start over                         |
+                        | 3: Delete last saved deal             |
+                        -----------------------------------------
+                        """);
                 switch (yesOrNo) {
-                    case "y" -> {
+                    case "1" -> {
                         //ITERATE THROUGH daysArray AND CREATE AN ENTRY WITH EACH ELEMENT IN THE ARRAY
                         for (DayOfWeek day : daysArray) {
                             //CREATING INSTANCES FROM THE CLASS CONSTRUCTORS
@@ -128,11 +143,11 @@ public class Main {
                             System.out.println("Your entry was saved: " + dealStack.peek());
                         }
                     }
-                    case "s" -> {
+                    case "2" -> {
                         System.out.println("Ok! Starting over!");
                         continue;
                     }
-                    case "d" -> {
+                    case "3" -> {
                         System.out.println("Your last entry was removed");
                         dealStack.pop();
                     }
@@ -159,8 +174,7 @@ public class Main {
 
                 while (dayInputConverted == null) {
                     try {
-                        System.out.println("Please enter a day of the week: ");
-                        String dayInput = scanner.nextLine().toUpperCase();
+                        String dayInput = getStringInput("Please enter a day of the week:").toUpperCase();
                         dayInputConverted = DayOfWeek.valueOf(dayInput);
                         if (dealMap.containsKey(dayInputConverted)) {
                             ArrayList<DealEntry> currentList = dealMap.get(dayInputConverted);
